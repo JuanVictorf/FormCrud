@@ -1,4 +1,4 @@
-import prismaClient from "../../prisma";
+/* import prismaClient from "../../prisma";
 import { Request, Response } from "express";
 
 interface UpdateRequest {
@@ -22,4 +22,4 @@ class UpdateUserService{
     }
 }
 
-export { UpdateUserService };
+export { UpdateUserService }; */
