@@ -1,9 +1,13 @@
 import { useState, ChangeEvent, FormEvent} from 'react';
+import Link from 'next/link';
 import Head from 'next/head';
 import styles from '../../styles/home.module.scss';
 import { toast } from 'react-toastify';
+import 'typeface-roboto';
+
 
 import { setupAPIClient } from '../services/api';
+
 
 export default function Home() {
   
@@ -68,7 +72,9 @@ export default function Home() {
         </button>
       </form>
 
-      <a className={styles.text}>Visualizar todos os usuários cadastrados</a>
+      <Link href="/list">
+        <p className={styles.text}>Visualizar todos os usuários cadastrados</p>
+      </Link>
     </div>
     </>
   )
