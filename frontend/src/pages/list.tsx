@@ -7,6 +7,7 @@ import 'typeface-roboto';
 
 
 import { setupAPIClient } from '../services/api';
+import { getuid } from 'process';
 
 type Users = {
     id: string;
@@ -19,6 +20,8 @@ type Users = {
 interface UserProps{
     users: Users[];
 }
+
+
 
 export default function List({ users }: UserProps) {
   
@@ -38,11 +41,38 @@ export default function List({ users }: UserProps) {
 
         setUserList(response.data);
         console.log(response);
-        console.log("teste");
     
     }
 
-    
+    async function handleClickEditar(id: string) {
+        alert("Clicado no botão editar!");
+        const apiClient = setupAPIClient();
+
+        await apiClient.get('/listusers', {
+            params: {
+                id: id,
+            }
+        });
+    }
+
+
+    async function handleClickExcluir(id: string, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        //console.log("Id clicado " + id);
+
+        const apiClient = setupAPIClient();
+
+        await apiClient.delete('/removeuser', {
+            params: {
+                id: id,
+            }
+        });
+  
+        const novaListaDeUsers = users.filter((users) => users.id !== id);
+        setUserList(novaListaDeUsers);
+
+        toast.success("Usuário excluído com sucesso!");
+
+    }
 
 
   return (
@@ -56,14 +86,30 @@ export default function List({ users }: UserProps) {
                 </div>
     </main>
 
-    <article className={styles.listUsers}>
-        {userList.map(users => (
-            <button onClick={ () => getUsers(users.id) }>
-                <span>Mesa {users.name}</span>      
-            </button>
-        ))}
 
-    </article>
+    <table className={styles.table}>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        {userList.map((users) => (
+          <tr key={users.id}>
+            <td>{users.id}</td>
+            <td>{users.name}</td>
+            <td>{users.email}</td>
+            <td>
+                <button onClick={() => handleClickExcluir(users.id)}>Excluir</button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    
+
 
       <Link href="/" className={styles.link}>
         <p className={styles.text}>Cadastrar usuários</p>

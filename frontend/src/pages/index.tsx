@@ -1,6 +1,7 @@
 import { useState, ChangeEvent, FormEvent} from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
+import { Header } from '../components/Header/';
 import styles from '../../styles/home.module.scss';
 import { toast } from 'react-toastify';
 import 'typeface-roboto';
@@ -48,6 +49,7 @@ export default function Home() {
     <Head>
       <title>Cadastro de usuário</title>
     </Head>
+    <Header/>
     <div className={styles.cadastro}>
       <h1>Cadastro de usuário</h1>
       <form onSubmit={handleRegister}>
