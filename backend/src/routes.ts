@@ -13,6 +13,7 @@ const router = Router();
 router.post('/users', new CreateUserController().handle);
 router.get('/listusers', new ListUsersController().handle);
 router.get('/listby/:id', new ListUsersIdController().handle);
+router.get('/users/:id', new ListUsersIdController().handle);
 router.delete('/removeuser', new DeleteUserController().handle);
 router.put('/users/:id', new UpdateUserController().handle);
 

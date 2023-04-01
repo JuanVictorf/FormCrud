@@ -8,8 +8,6 @@ import { setupAPIClient } from '../services/api';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 
-
-
 type Users = {
     id: string;
     name: string;
@@ -43,7 +41,7 @@ export default function List({ users }: UserProps) {
     
     }
 
-
+    
     async function handleClickEditar(id: string, event: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> {
         //alert("Clicado no botão editar!");
         const apiClient = setupAPIClient();
@@ -119,8 +117,6 @@ export default function List({ users }: UserProps) {
         ))}
       </tbody>
     </table>
-    
-
 
       <Link href="/" className={styles.link}>
         <p className={styles.text}>Cadastrar usuários</p>
