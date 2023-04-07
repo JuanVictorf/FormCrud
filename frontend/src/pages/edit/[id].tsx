@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 
 
 import { setupAPIClient } from '../../services/api';
-//import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 type Users = {
   id: string;
@@ -31,56 +31,74 @@ interface UserProps{
 export default function Edit() {
   
   //const { id } = useParams();
-
  
   const router = useRouter();
   const { id } = router.query;
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+
+  //console.log(id); // Buscando o ID - está trazendo
+  
   
   const apiClient = setupAPIClient();
  
 
-  const [data, setData] = useState({})
+  const [user, setUser] = useState<Users | null>(null);
 
-
+  
   useEffect(() => {
-    const { id } = router.query // obtém o valor do parâmetro da URL
-    fetch(`/listby/${id}`)
-      .then(res => res.json())
-      .then(data => setData(data))
-      .catch(error => console.error(error))
-  }, [])
-  
+    async function loadUser() {
+      try {
+        const response = await apiClient.get(`/listby/${id}`);
+        setUser(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    loadUser();
+  }, [id]);
 
-  //console.log(id); // Buscando o ID - está trazendo
-
   
+  
+    /*async function getUsers(id: string){
+
+        const apiClient = setupAPIClient();
+
+        const response = await apiClient.get(`/listby/${id}`, {
+            params: {
+                id: id,
+            }
+        });
+
+        setUser(response.data);
+        console.log(response);
+        console.log(user.name);
     
-    //const usuario = await apiClient.get.findUnique({
-      //where: { id }
-    //})
-    //setEmail(usuario.email)
-    //setName(usuario.nome)
-  
+    }
+    */
 
-  async function handleRegister(event: FormEvent) {
+    
+    
+
+  async function handleUpdate(event: FormEvent) {
     event.preventDefault();
 
     const apiClient = setupAPIClient();
 
-    /*await apiClient.get('/listby/:id', {
-      name,
-      email
+    await apiClient.put(`/users/${id}`, {
+      name: name,
+      email: email
     })
-    */
-
     
+    console.log(name);
+    console.log(email);
+    
+    toast.success("Usuário atualizado com sucesso!");
 
-    //toast.success("Usuário atualizado com sucesso!");
-
-    /*setName('');
-    setEmail('');
-    setNumero('');
-    setCidade('');*/
+    setName(name);
+    setEmail(email);
+   
 
     
   }
@@ -94,10 +112,16 @@ export default function Edit() {
     <Header/>
     <div className={styles.cadastro}>
       <h1>Editar Cadastro de usuário</h1>
-      <form onSubmit={handleRegister}>
+      <form onSubmit={handleUpdate}>
         <input type="text" className={styles.input} placeholder="Nome"
+        value={name}
+        onChange={ (e) => setName(e.target.value)}
+        /*value={user?.name ?? ''}*/
         />
         <input type="text" className={styles.input} placeholder="Email"
+         value={email}
+         onChange={ (e) => setEmail(e.target.value)}
+         /*value={user?.email ?? ''}*/
         />
         <button className={styles.button} type="submit"> 
           <a>Atualizar</a>
@@ -112,6 +136,10 @@ export default function Edit() {
   )
 }
 
+
+function express() {
+  throw new Error('Function not implemented.');
+}
 /*
 
 export const getServerSideProps = async (ctx: any) => {  
